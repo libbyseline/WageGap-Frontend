@@ -1,0 +1,14 @@
+[project]
+name = "wagegap-frontend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "altair>=6.0.0",
+    "ipykernel>=7.1.0",
+    "pandas>=2.3.3",
+    "polars>=1.35.2",
+    "skimpy>=0.0.19",
+    "vl-convert-python>=1.8.0",
+]

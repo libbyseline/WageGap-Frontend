@@ -3,6 +3,10 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# Ignore my large data file
+data/*
+.DS_Store
+
 # C extensions
 *.so
 
@@ -31,6 +35,10 @@ MANIFEST
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
+
+# Ignore svg folder and files
+src/svgs/*
+src/htmls/*
 
 # Installer logs
 pip-log.txt
