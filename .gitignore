@@ -36,6 +36,8 @@ MANIFEST
 *.manifest
 *.spec
 
+.env
+node_modules/*
 # Ignore svg folder and files
 src/svgs/*
 src/htmls/*
