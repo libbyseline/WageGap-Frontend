@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submission</title>
+  </head>
+  <body>
+    <form
+      action="/delays.html"
+      style="
+        width: 300px;
+        margin: 0 auto;
+        padding-top: 200px;
+        background: #ffffff;
+      "
+      method="get"
+      target="results_iframe"
+      class="elegant-aero"
+      id="myForm"
+    >
+      <label>
+        <span>Name:</span>
+        <input type="text" id="name" name="name" />
+      </label>
+      <label>
+        <span>Income:</span>
+        <input
+          type="number"
+          id="income"
+          name="income"
+          inputmode="numeric"
+          maxlength="19"
+        />
+      </label>
+      <label>
+        <span>Sex:</span>
+        <!-- 
+        Code from 
+        https://stackoverflow.com/questions/63255865/using-javascript-with-html-drop-down-select
+        https://stackoverflow.com/questions/8605516/set-the-select-option-as-blank-as-default-in-html-select-element
+        -->
+        <select name="sex_dd" id="sex_dd" onchange="checkSelects(sex_dd)">
+          <option hidden disabled selected value>-- Select an option --</option>
+          <option>Female</option>
+          <option>Male</option>
+        </select>
+      </label>
+      <label>
+        <span>Industry:</span>
+        <select
+          name="industry_dd"
+          id="industry_dd"
+          onchange="checkSelects(industry_dd)"
+        >
+          <option hidden disabled selected value>-- Select an option --</option>
+          <option>Accommodation and Food Services</option>
+          <option>Active Duty Military</option>
+          <option>
+            Administrative and Support and Waste Management and Remediation
+            Services
+          </option>
+          <option>Arts, Entertainment, and Recreation</option>
+          <option>Educational Services</option>
+          <option>Finance and Insurance</option>
+          <option>Health Care and Social Assistance</option>
+          <option>Information</option>
+          <option>Manufacturing</option>
+          <option>Mining, Quarrying, and Oil and Gas Extraction</option>
+          <option>Other Services (Except Public Administration)</option>
+          <option>Professional, Scientific, and Technical Services</option>
+          <option>Public Administration</option>
+          <option>Real Estate and Rental and Leasing</option>
+          <option>Retail Trade</option>
+          <option>Transportation and Warehousing</option>
+          <option>Utilities</option>
+          <option>Wholesale Trade</option>
+        </select>
+      </label>
+      <label>
+        <span>Race:</span>
+        <select name="race_dd" id="race_dd" onchange="checkSelects(race_dd)">
+          <option hidden disabled selected value>-- Select an option --</option>
+          <option>American Indian Or Alaska Native</option>
+          <option>Asian Or Pacific Islander</option>
+          <option>Black/African American</option>
+          <option>Hispanic</option>
+          <option>Two Or More Major Races</option>
+          <option>White</option>
+        </select>
+      </label>
+      <label>
+        <span>Metro:</span>
+        <select name="metro_dd" id="metro_dd" onchange="checkSelects(metro_dd)">
+          <option hidden disabled selected value>-- Select an option --</option>
+          <option>Atlanta-Sandy Springs-Roswell</option>
+          <option>Chicago-Naperville-Elgin</option>
+          <option>Dallas-Fort Worth-Arlington</option>
+          <option>Houston-The Woodlands-Sugar Land</option>
+          <option>Los Angeles-Long Beach-Anaheim</option>
+          <option>Miami-Fort Lauderdale-West Palm Beach</option>
+          <option>New York-Newark-Jersey City</option>
+          <option>Philadelphia-Camden-Wilmington</option>
+          <option>Phoenix-Mesa-Scottsdale</option>
+          <option>Washington-Arlington-Alexandria</option>
+        </select>
+      </label>
+      <!-- <label> <span></span> <input type="submit" value="Submit" /> </label> -->
+    </form>
+    <button id="submit_btn">Submit form</button>
+    <button id="default_btn">Use defaults</button>
+    <script>
+      const submit_btn = document.querySelector("#submit_btn");
+      const default_btn = document.querySelector("#default_btn");
+      const allInputs = document.querySelectorAll("input");
+      const allSelects = document.querySelectorAll("select");
+      /* AI DISCLAIMER: Validate income
+
+            The following chunk of code was inspired by a Google search result
+            "html form assert numeric input"
+        */
+      function checkInputs(id) {
+        let elem = document.getElementById(id);
+        console.log(id);
+        let val = elem.value;
+        console.log("VALUE = " + val);
+        let valid = false;
+        if (
+          val === null ||
+          val.trim() === "" ||
+          val === "-- Select an option --"
+        ) {
+          alert("You are missing a value for " + id + " Your value is " + val);
+          return valid;
+        } else {
+          let valid = true;
+          return valid;
+        }
+      }
+      function checkSelects(id) {
+        let elem = document.getElementById(id);
+        console.log(elem);
+        console.log(elem.options[elem.selectedIndex].value);
+        // this differentiates between a drop down and a non drop down
+        let val = elem.options[elem.selectedIndex].value;
+        let warningClass = id.substring(0, id.length - 3);
+        let valid = false;
+        if (
+          val === null ||
+          val.trim() === "" ||
+          val === "-- Select an option --"
+        ) {
+          console.log("NULL" + val);
+          alert("You are missing a value for " + warningClass);
+          return valid;
+        } else {
+          let valid = true;
+          return valid;
+        }
+      }
+      // END of chunk to validate income
+
+      submit_btn.addEventListener("click", (event) => {
+        // select all inputs: loop through; if false
+        for (const input of allInputs) {
+          console.log(input);
+          valid = checkInputs(input.id);
+          if (valid === false) {
+            break;
+          }
+        }
+        if (valid === true) {
+          for (const select of allSelects) {
+            valid = checkSelects(select.id);
+            if (valid === false) {
+              break;
+            }
+          }
+        }
+        if (valid === true) {
+          let sex_raw = document.getElementById("sex_dd");
+          let sex = sex_raw.options[sex_raw.selectedIndex].value;
+          let industry_raw = document.getElementById("industry_dd");
+          let industry = industry_raw.options[industry_raw.selectedIndex].value;
+          let race_raw = document.getElementById("race_dd");
+          let race = race_raw.options[race_raw.selectedIndex].value;
+          let metro_raw = document.getElementById("metro_dd");
+          let metro = metro_raw.options[metro_raw.selectedIndex].value;
+          document.getElementById("myForm").submit();
+        }
+      });
+      default_btn.addEventListener("click", (event) => {
+        let name = "Average Female in US";
+        let income = 63024;
+        let sex = "Female";
+        console.log("Sex is defaulting to " + sex);
+        let industry = "Health Care and Social Assistance";
+        console.log("Industry is defaulting to " + industry);
+        let race = "White";
+        console.log("Race is defaulting to " + race);
+        let metro = "Chicago-Naperville-Elgin";
+        console.log("Metro is defaulting to " + metro);
+        document.getElementById("myForm").submit();
+      });
+    </script>
+  </body>
+</html>
