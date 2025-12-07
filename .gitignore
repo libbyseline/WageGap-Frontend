@@ -4,7 +4,8 @@ __pycache__/
 *$py.class
 
 # Ignore my large data file
-data/*
+data/metrowages23_final.csv
+data/clean_metro_wages.csv
 .DS_Store
 
 # C extensions

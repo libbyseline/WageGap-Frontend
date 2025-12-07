@@ -1,0 +1,15 @@
+race_ethnc_gen,sex,avg,p25,p75
+White,male,112699,40000,138000
+White,female,73904,26400,94000
+Asian Or Pacific Islander,male,102239,35000,134000
+Asian Or Pacific Islander,female,77270,25000,100000
+Other,male,93801,33800,106000
+Other,female,64134,22900,82000
+Two Or More Major Races,male,74977,28000,90000
+Two Or More Major Races,female,55803,20000,70000
+Black/African American,male,63292,25000,80000
+Black/African American,female,56094,22000,74000
+American Indian Or Alaska Native,male,55495,25000,70000
+American Indian Or Alaska Native,female,45064,18000,60000
+Hispanic,male,52102,25000,65000
+Hispanic,female,41523,19200,50000
