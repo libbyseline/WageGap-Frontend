@@ -1,31 +1,33 @@
-"use strict"; // From Spetrus template
-const http = require("http"); // From Spetrus template
-var assert = require("assert"); // From Spetrus template
-require("dotenv").config(); // From Spetrus template
-const express = require("express"); // From Spetrus template
-const app = express(); // From Spetrus template
-const mustache = require("mustache"); // From Spetrus template
-const filesystem = require("fs"); // From Spetrus template
-const url = new URL(process.argv[3]); // From Spetrus template
-const hbase = require("hbase"); // From Spetrus template
-const port = Number(process.argv[2]); // From Spetrus template
+"use strict";
+const http = require("http");
+var assert = require("assert");
+require("dotenv").config();
+const express = require("express");
+const app = express();
+const mustache = require("mustache");
+const filesystem = require("fs");
+const hbase = require("hbase");
+
+// Section 1A: Environment variables Needed
+const port = Number(process.env.port);
+const kafka_pass = process.env.KAFKA_PASS;
+const hbase_auth = process.env.HBASE_AUTH;
+const url = new URL(process.env.url);
 
 var hclient = hbase({
-  // Variable is from Spetrus template
   host: url.hostname,
   path: url.pathname ?? "/",
   port: url.port, // http or https defaults
   protocol: url.protocol.slice(0, -1), // Don't want the colon
   encoding: "latin1",
-  auth: process.env.HBASE_AUTH,
+  auth: hbase_auth,
 });
 
+// Section 1B: Hbase functions
 function counterToNumber(c) {
-  // Function is from Spetrus template
   return Number(Buffer.from(c).readBigInt64BE());
 }
 function rowToMap(row) {
-  // Function is from Spetrus template
   var stats = {};
   row.forEach(function (item) {
     stats[item["column"]] = counterToNumber(item["$"]);
@@ -33,55 +35,39 @@ function rowToMap(row) {
   return stats;
 }
 
-// SECTION 00: Variables & base functions to load data
+// SECTION 2: Scan prep
 
-const tbl_bv_sex = "eseline_bv_sex";
-const scan_bv_sex = hbase({}).getTable("tbl_bv_sex").scan();
-const rows_bv_sex = [];
-
-function scan_and_iter(scanner) {
+function scan_and_iter(scanner, done) {
+  let all_rows = [];
   /*
 AI DISCLOSURE: 
     Searched Google: "node.js hbase grab whole table iterate through rows"
+    Gemini further suggested to do everythng on a 'data' event -- so I'm capturing \
+    data as soon as it arrives and processing it asynchronously 
 */
-  all_rows = [];
-  scanner.on("readable", function () {
-    let chunk;
-    while ((chunk = table.read())) {
-      chunk.forEach((row) => {
-        row_stats = rowToMap(row);
-        all_rows.push(row_stats);
-      });
-      // IF I decide to do a graph where I map out each point one by one
-      // I'd have to add some kind of function here to do that
-      /*
-      To process each row -- you'd do something like:
-      row_stats.forEach(cell => {
-        const value = cell.$;
-        const column = cell.column;
-        console.log(`- Column: ${column}, Value: ${value}`)
-
-      */
+  scanner.on("data", function (row) {
+    try {
+      let row_stats = rowToMap(row);
+      all_rows.push(row_stats);
+    } catch (e) {
+      console.error("Error parsing row:", e);
     }
   });
   scanner.on("error", function (err) {
     console.error("Scan error:", err);
+    done(err, null);
   });
 
   scanner.on("end", function () {
-    console.log("Finished scanning table. Total rows retrieved:", rows.length);
+    console.log(
+      "Finished scanning table. Total rows retrieved:",
+      all_rows.length
+    );
+    done(null, all_rows);
   });
-  return all_rows; // Change if not doing all_rows
 }
 
-app.use(express.static("public")); // From Spetrus template
-app.get("/delays.html", function (req, res) {
-  // From Spetrus template
-  // TODO: replace next two lines with variables of input
-  const route = req.query["origin"] + req.query["dest"];
-  console.log(route);
-  rows_bv_sex = scan_and_iter(scan_bv_sex);
-});
+// Section 3: Start up Kafka Topic
 
 const { Kafka } = require("kafkajs");
 
@@ -94,7 +80,7 @@ const kafkajsClient = new Kafka({
   sasl: {
     mechanism: "scram-sha-512",
     username: "mpcs53014-2025",
-    password: "Kafka password here",
+    password: kafka_pass,
   },
   connectionTimeout: 10000,
   requestTimeout: 30000,
@@ -118,41 +104,73 @@ const producer = kafkajsClient.producer();
 producer.connect();
 testConnection();
 
-app.get("/weather.html", function (req, res) {
-  var station_val = req.query["station"];
-  var fog_val = req.query["fog"] ? true : false;
-  var rain_val = req.query["rain"] ? true : false;
-  var snow_val = req.query["snow"] ? true : false;
-  var hail_val = req.query["hail"] ? true : false;
-  var thunder_val = req.query["thunder"] ? true : false;
-  var tornado_val = req.query["tornado"] ? true : false;
-  var report = {
-    station: station_val,
-    clear:
-      !fog_val &&
-      !rain_val &&
-      !snow_val &&
-      !hail_val &&
-      !thunder_val &&
-      !tornado_val,
-    fog: fog_val,
-    rain: rain_val,
-    snow: snow_val,
-    hail: hail_val,
-    thunder: thunder_val,
-    tornado: tornado_val,
-  };
+// SECTION 4: Enter data into speed layer
 
-  producer
-    .send({
-      topic: "weather-reports",
-      messages: [{ value: JSON.stringify(report) }],
-    })
-    .then((_) => res.redirect("submit-weather.html"))
-    .catch((e) => {
-      console.error(`[example/producer] ${e.message}`, e);
-      res.redirect("submit-weather.html");
-    });
+app.use(express.static("public"));
+app.get("/loadRaceGraphs.html", function (req, res) {
+  let name = req.query["name"];
+  let income = req.query["income"];
+  let sex = req.query["sex_dd"];
+  let industry = req.query["industry_dd"];
+  let race = req.query["race_dd"];
+  let metro = req.query["metro_dd"];
+  let report = {
+    incwage: income,
+    sex: sex,
+    industry: industry,
+    race_ethnc_gen: race,
+    metro: metro,
+  };
+  if (name !== "Average Female in US") {
+    producer
+      .send({
+        topic: "mpcs53014_eseline_speed",
+        messages: [{ value: JSON.stringify(report) }],
+      })
+      .then((_) => res.redirect("interactive.html"))
+      .catch((e) => {
+        console.error(`[example/producer] ${e.message}`, e);
+        res.redirect("interactive.html");
+      });
+  } else {
+    res.redirect("interactive.html");
+  }
 });
+
+/* SECTION 6:
+AI DISCLAIMER: Because I am using a scrollytelling method, I should load the \
+data at different times, thus, AI helped me switch to a fetch method
+*/
+app.get("/api/batch-data", function (req, res) {
+  const scan_bv_race = hclient.getTable(tbl_bv_race).scan();
+  // Reuse your scanner logic, but handle the response here
+  scan_and_iter(scan_bv_race, function (err, data) {
+    if (err) res.status(500).json({ error: err });
+    else res.json(data); // Send data as JSON to the browser
+  });
+});
+
+app.get("/api/user-stats", function (req, res) {
+  const scan_stats = hclient.getTable(userstats).scan();
+  // Uses the callback-based scan_and_iter function we fixed earlier
+  scan_and_iter(scan_stats, function (err, data) {
+    if (err) {
+      console.error("Error fetching User Stats:", err);
+      res.status(500).json({ error: "Failed to fetch user stats" });
+    } else {
+      // Send the rows back as JSON
+      res.json(data);
+    }
+  });
+});
+
+/*
+app.get("/api/speed-data", function (req, res) {
+  scan_and_iter(scan_entries, function (err, data) {
+    if (err) res.status(500).json({ error: err });
+    else res.json(data);
+  });
+});
+*/
 
 app.listen(port);
