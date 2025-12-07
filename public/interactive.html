@@ -1,10 +1,37 @@
 <!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html>
   <head>
-    <title>Route Delays</title>
-    <link type="text/css" rel="stylesheet" href="elegant-aero.css" />
+    <title>Wage Gap</title>
+    <link href="css/interactive-style.css" rel="stylesheet" />
   </head>
-  <body></body>
+  <body>
+    <!-- This code is copy/pasted from pudding/scrollama documentation -->
+    <section id="scroll">
+      <!--  graphic container  -->
+      <div class="scroll__graphic">
+        <!--   actual graphic/chart   -->
+        <div class="chart">
+          <p>0</p>
+        </div>
+      </div>
+
+      <!--  step/text container  -->
+      <div class="scroll__text">
+        <div class="step" data-step="1">
+          <p>STEP 1</p>
+        </div>
+        <div class="step" data-step="2">
+          <p>STEP 2</p>
+        </div>
+        <div class="step" data-step="3">
+          <p>STEP 3</p>
+        </div>
+        <div class="step" data-step="4">
+          <p>STEP 4</p>
+        </div>
+      </div>
+    </section>
+  </body>
   <script>
     // AI DISCLAIMER: Gemini wrote code to fetch the data
 
@@ -31,24 +58,47 @@
       })
       .catch((error) => console.error("Error loading user stats:", error));
 
+    // using d3 for convenience, and storing a selected elements
+    const $container = d3.select("#scroll");
+    const $graphic = container.select(".scroll__graphic");
+    const $chart = graphic.select(".chart");
+    const $text = container.select(".scroll__text");
+    const $step = text.selectAll(".step");
+
+    // initialize the scrollama
+    const scroller = scrollama();
+
+    // resize function to set dimensions on load and on page resize
+    function handleResize() {}
+
+    // scrollama event handlers
+    function handleStepEnter(response) {}
+
+    function handleContainerEnter(response) {}
+
+    function handleContainerExit(response) {}
+
+    // kick-off code to run once on load
+    function graph1(data) {}
+
     // 2. Fetch the second dataset.
     // You can either do this immediately in the background:
     /*
-fetch('/api/speed-data')
-  .then(response => response.json())
-  .then(data => {
-      console.log("Speed data loaded:", data);
-      // Store this data in a global variable for later use
-      window.speedData = data;
-  });
+    fetch('/api/speed-data')
+      .then(response => response.json())
+      .then(data => {
+          console.log("Speed data loaded:", data);
+          // Store this data in a global variable for later use
+          window.speedData = data;
+      });
 
-// OR, specifically for scrollytelling, trigger it only when needed:
-// (Pseudo-code for a scroll library like ScrollMagic or IntersectionObserver)
-scroller.on('enter-last-section', function() {
-    if (!window.speedData) {
-         fetch('/api/speed-data').then(data => drawLastGraph(data));
-    }
-});
-*/
+    // OR, specifically for scrollytelling, trigger it only when needed:
+    // (Pseudo-code for a scroll library like ScrollMagic or IntersectionObserver)
+    scroller.on('enter-last-section', function() {
+        if (!window.speedData) {
+             fetch('/api/speed-data').then(data => drawLastGraph(data));
+        }
+    });
+    */
   </script>
 </html>
