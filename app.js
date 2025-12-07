@@ -28,7 +28,12 @@ function counterToNumber(c) {
   return Number(Buffer.from(c).readBigInt64BE());
 }
 function rowToMap(row) {
-  var stats = {};
+  let stats = {};
+  // AI Disclaimer: Need to filter data, and AI helped generated this solution
+  if (row && row.length > 0) {
+    stats["key"] = row[0]["key"];
+  }
+  // 2. Process the columns (metrics)
   row.forEach(function (item) {
     stats[item["column"]] = counterToNumber(item["$"]);
   });
