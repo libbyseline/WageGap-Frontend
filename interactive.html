@@ -4,92 +4,51 @@
     <title>Route Delays</title>
     <link type="text/css" rel="stylesheet" href="elegant-aero.css" />
   </head>
-  <body
-    style="
-      background-image: URL('AirLines-white.jpg');
-      background-repeat: no-repeat;
-      background-position: center top;
-      -webkit-background-size: 100%;
-      -moz-background-size: 100%;
-      -o-background-size: 100%;
-      background-size: 100%;
-    "
-  >
-    <p style="margin-bottom: 2cm" />
-    <form
-      action="/delays.html"
-      style="
-        width: 300px;
-        margin: 0 auto;
-        padding-top: 200px;
-        background: #ffffff;
-      "
-      method="get"
-      target="results_iframe"
-      class="elegant-aero"
-    >
-      <label>
-        <span>Name:</span>
-        <input type="text" name="name" value="Average Female in US" />
-      </label>
-      <label>
-        <span>Sex:</span>
-        <!-- 
-        Code from 
-        https://stackoverflow.com/questions/63255865/using-javascript-with-html-drop-down-select
-        -->
-        <select name="sex_dd" id="sex_dd" onchange="handleChange()">
-          <option value="a">Female</option>
-          <option value="b">Male</option>
-        </select>
-      </label>
-      <label>
-        <span>Industry:</span>
-        <select name="industry_dd" id="industry_dd" onchange="handleChange()">
-          <option value="a">A</option>
-          <option value="b">B</option>
-          <option value="c">C</option>
-        </select>
-      </label>
-      <label>
-        <span>Race:</span>
-        <select name="race_dd" id="race_dd" onchange="handleChange()">
-          <option value="a">A</option>
-          <option value="b">B</option>
-          <option value="c">C</option>
-        </select>
-      </label>
-      <label>
-        <span>Metro:</span>
-        <select name="metro_dd" id="metro_dd" onchange="handleChange()">
-          <option value="a">A</option>
-          <option value="b">B</option>
-          <option value="c">C</option>
-        </select>
-      </label>
-      <script>
-        function handleChange() {
-          let sex_raw = document.getElementById("sex_dd");
-          let sex = letter.options[sex_raw.selectedIndex].value;
-          let industry_raw = document.getElementById("industry_dd");
-          let industry = industry_raw.options[industry_raw.selectedIndex].value;
-          let race_raw = document.getElementById("race_dd");
-          let race = race_raw.options[race_raw.selectedIndex].value;
-          let metro_raw = document.getElementById("metro_dd");
-          let metro = race_raw.options[race_raw.selectedIndex].value;
-          //  if (userLtr == "a") {
-          //    document.write("You selected A");
-          //  }
-        }
-      </script>
-      <label> <span></span> <input type="submit" value="Submit" /> </label>
-    </form>
-    <p style="margin-bottom: 2cm" />
+  <body></body>
+  <script>
+    // AI DISCLAIMER: Gemini wrote code to fetch the data
 
-    <iframe
-      frameborder="0"
-      name="results_iframe"
-      style="display: block; width: 70%; margin-left: auto; margin-right: auto"
-    />
-  </body>
+    // 1. Fetch the first dataset immediately when the page loads
+    fetch("/api/batch-data")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Batch data loaded:", data);
+        // Call your D3 function to draw the first graph
+        drawMainGraph(data);
+      });
+
+    let userStatsData = null; // Global variable to hold the data
+
+    // Fetch the data immediately on page load
+    fetch("/api/user-stats")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("User Stats Loaded:", data);
+        userStatsData = data;
+
+        // OPTIONAL: If you want to draw this graph immediately, call your function here:
+        // drawUserStatsGraph(userStatsData);
+      })
+      .catch((error) => console.error("Error loading user stats:", error));
+
+    // 2. Fetch the second dataset.
+    // You can either do this immediately in the background:
+    /*
+fetch('/api/speed-data')
+  .then(response => response.json())
+  .then(data => {
+      console.log("Speed data loaded:", data);
+      // Store this data in a global variable for later use
+      window.speedData = data;
+  });
+
+// OR, specifically for scrollytelling, trigger it only when needed:
+// (Pseudo-code for a scroll library like ScrollMagic or IntersectionObserver)
+scroller.on('enter-last-section', function() {
+    if (!window.speedData) {
+         fetch('/api/speed-data').then(data => drawLastGraph(data));
+    }
+});
+*/
+  </script>
 </html>

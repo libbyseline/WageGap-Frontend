@@ -7,7 +7,7 @@
   </head>
   <body>
     <form
-      action="/delays.html"
+      action="/loadRaceGraphs.html"
       style="
         width: 300px;
         margin: 0 auto;
@@ -178,6 +178,10 @@
           }
         }
         if (valid === true) {
+          let name_raw = document.getElementById("name");
+          let name = name_raw.value;
+          let income_raw = document.getElementById("income");
+          let income = income_raw.value;
           let sex_raw = document.getElementById("sex_dd");
           let sex = sex_raw.options[sex_raw.selectedIndex].value;
           let industry_raw = document.getElementById("industry_dd");
@@ -190,16 +194,20 @@
         }
       });
       default_btn.addEventListener("click", (event) => {
-        let name = "Average Female in US";
-        let income = 63024;
-        let sex = "Female";
-        console.log("Sex is defaulting to " + sex);
-        let industry = "Health Care and Social Assistance";
-        console.log("Industry is defaulting to " + industry);
-        let race = "White";
-        console.log("Race is defaulting to " + race);
-        let metro = "Chicago-Naperville-Elgin";
-        console.log("Metro is defaulting to " + metro);
+        // AI Disclosure: Used AI to help debug how to send values via form when submissions are empty
+        document.getElementById("name").value = "Average Female in US";
+        document.getElementById("income").value = 63024;
+        document.getElementById("sex_dd").value = "Female";
+        console.log("Sex is defaulting to Female");
+        document.getElementById("industry_dd").value =
+          "Health Care and Social Assistance";
+        console.log(
+          "Industry is defaulting to Health Care and Social Assistance"
+        );
+        document.getElementById("race_dd").value = "White";
+        console.log("Race is defaulting to White");
+        document.getElementById("metro_dd").value = "Chicago-Naperville-Elgin";
+        console.log("Metro is defaulting to Chicago-Naperville-Elgin");
         document.getElementById("myForm").submit();
       });
     </script>
