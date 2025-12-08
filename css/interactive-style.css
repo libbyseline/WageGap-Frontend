@@ -95,7 +95,7 @@ One div will be for text. The other will have the graph  */
 /* 3. Size the graph area */
 .step-graph {
   flex: 1; /* Takes up 1 "unit" of space */
-  height: 400px; /* Give the graph a dedicated height */
+  height: 600px; /* Give the graph a dedicated height */
   background-color: #f0f0f0; /* Temporary background to see the box */
   border-radius: 8px;
   /* Default state: Hidden and slightly lower down */
