@@ -184,6 +184,9 @@
       margin.top -
       margin.bottom;
     const shp_size_1 = height / (2 * step1_data.length);
+    const shp_size_2 = height / (2 * step2_data.length);
+    const shp_size_3 = height / (2 * step3_data.length);
+    const shp_size_4 = height / (2 * step4_data.length);
 
     // Part 5: Make graphs, append to div
     const chart1 = main(
@@ -201,6 +204,28 @@
       step2_data,
       user_income,
       "All",
+      margin,
+      width,
+      height,
+      shp_size_1
+    );
+
+    const chart3 = main(
+      "#graph3",
+      step3_data,
+      user_income,
+      user_race,
+      margin,
+      width,
+      height,
+      shp_size_1
+    );
+
+    const chart4 = main(
+      "#graph4",
+      step4_data,
+      user_income,
+      user_race,
       margin,
       width,
       height,
