@@ -162,6 +162,7 @@ app.get("/api/user-stats", function (req, res) {
     if (err) {
       console.error("Error fetching User Stats:", err);
       res.status(500).json({ error: "Failed to fetch user stats" });
+      data = d3;
     } else {
       // Send the rows back as JSON
       res.json(data);
