@@ -32,16 +32,16 @@ https://pudding.cool/process/introducing-scrollama/ */
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
 }
-#intro p {
+p {
   padding-left: 100px;
   width: fit-content;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1em;
 }
-#intro li {
+li {
   font-family: Arial, Helvetica, sans-serif;
 }
-#intro ul {
+ul {
   padding-left: 150px;
   width: fit-content;
   text-align: left; /* Keep the text/bullet relationship normal */
@@ -65,6 +65,52 @@ span.male {
 #scroll {
   position: relative;
 }
+#begin {
+  font-family: Arial, Helvetica, sans-serif;
+  /* text-align: center; */
+}
+/* AI DISCLAIMER: I used AI to generate the CSS for the divs within the steps
+One div will be for text. The other will have the graph  */
+
+/* 1. Turn the step into a flexible container */
+.step {
+  opacity: 0;
+  display: flex; /* Enables side-by-side layout */
+  flex-direction: row; /* Aligns children horizontally */
+  align-items: center; /* Vertically centers them */
+  justify-content: space-between; /* Puts space between them */
+  gap: 2rem; /* Adds a gap between text and graph */
+
+  /* Keep your existing padding/margin here */
+  padding: 0px 0;
+  min-height: 30vh; /* Ensures the step is tall enough */
+}
+
+/* 2. Size the text area */
+.step-text {
+  flex: 1; /* Takes up 1 "unit" of space */
+  max-width: 40%; /* Optional: Cap the text width */
+}
+
+/* 3. Size the graph area */
+.step-graph {
+  flex: 1; /* Takes up 1 "unit" of space */
+  height: 400px; /* Give the graph a dedicated height */
+  background-color: #f0f0f0; /* Temporary background to see the box */
+  border-radius: 8px;
+  /* Default state: Hidden and slightly lower down */
+  opacity: 0;
+  transform: translateY(20px); /* Moves it down 20px */
+  transition: all 0.5s ease-out; /* Smooths the animation */
+}
+
+/* Active state: Visible and in original position */
+.step.is-active .step-graph {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* The follow is from the Scrollama documentation */
 .scroll__graphic {
   position: absolute;
   top: 0;
@@ -84,48 +130,10 @@ span.male {
   bottom: 0;
   top: auto;
 }
-.scroll__graphic .chart1 {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  -moz-transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-.scroll__graphic .chart2 {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  -moz-transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-.scroll__graphic .chart3 {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  -moz-transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-.scroll__graphic .chart4 {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  -moz-transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
 .scroll__text {
   padding: 0 1rem;
   max-width: 30rem;
 }
-
-.step {
-  opacity: 0;
-  padding: 1rem;
-}
-
 .step.is-active {
   opacity: 1;
 }

@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Wage Gap</title>
+    <script src="../node_modules/scrollama/build/scrollama.js"></script>
     <link href="css/interactive-style.css" rel="stylesheet" />
   </head>
   <body>
@@ -13,66 +14,83 @@
           between males and females in the US
         </h2>
         <h3>Project by Libby Seline</h3>
-        <p><span id="intro_paragraph"></span></p>
-        <ul>
-          <li>
-            a
-            <span class="user_race"></span>
-            <span class="user_sex"></span>
-          </li>
-          <li>
-            who lives in
-            <span class="user_metro"></span> metro area
-          </li>
-          <li>
-            and works in
-            <span class="user_industry"></span>.
-          </li>
-        </ul>
-        <p>
-          Your income is
-          <span class="user_income"></span>. How does that compare with other
-          <span class="user_sex"></span>s?
-        </p>
       </div>
-      <div
-        class="step"
-        data-step="1"
-        style="padding: 145px 0px"
-        data-scrollama-index="0"
-      >
-        <div class="scrolly_text">
-          <p>STEP 1</p>
+    </section>
+    <section id="scrolly">
+      <article>
+        <div
+          class="step"
+          data-step="1"
+          style="padding: 0px 0px"
+          data-scrollama-index="0"
+          id="begin"
+        >
+          <div class="step-text">
+            <p><span id="intro_paragraph"></span></p>
+            <ul>
+              <li>
+                a
+                <span class="user_race"></span>
+                <span class="user_sex"></span>
+              </li>
+              <li>
+                who lives in
+                <span class="user_metro"></span> metro area
+              </li>
+              <li>
+                and works in
+                <span class="user_industry"></span>.
+              </li>
+            </ul>
+            <p>
+              Your income is
+              <span class="user_income"></span>. How does that compare with
+              other <span class="user_sex"></span>s?
+            </p>
+          </div>
         </div>
-      </div>
-      <div
-        class="step"
-        data-step="2"
-        style="padding: 286px 0px"
-        data-scrollama-index="1"
-      >
-        <div class="scrolly_text">
-          <p>STEP 2</p>
+
+        <div
+          class="step"
+          data-step="1"
+          style="padding: 145px 0px"
+          data-scrollama-index="1"
+        >
+          <div class="step-text">
+            <p>STEP 1</p>
+          </div>
         </div>
-      </div>
-      <div
-        class="step"
-        data-step="3"
-        style="padding: 201px 0px"
-        data-scrollama-index="2"
-      >
-        <div class="scrolly_text">
-          <p>STEP 3</p>
+        <div
+          class="step"
+          data-step="2"
+          style="padding: 286px 0px"
+          data-scrollama-index="2"
+        >
+          <div class="step-text">
+            <p>STEP 2</p>
+          </div>
         </div>
-      </div>
-      <div
-        class="step"
-        data-step="4"
-        style="padding: 130px 0px"
-        data-scrollama-index="3"
-      >
-        <p>STEP 4</p>
-      </div>
+        <div
+          class="step"
+          data-step="3"
+          style="padding: 201px 0px"
+          data-scrollama-index="3"
+        >
+          <div class="step-text">
+            <p>STEP 3</p>
+          </div>
+        </div>
+        <div
+          class="step"
+          data-step="4"
+          style="padding: 130px 0px"
+          data-scrollama-index="4"
+        >
+          <div class="step-text">
+            <p>STEP 4</p>
+          </div>
+        </div>
+      </article>
     </section>
   </body>
   <script type="module">
@@ -157,10 +175,10 @@
 
     function init() {
       // set random padding for different step heights (not required)
-      step.forEach(function (step) {
-        var v = 100 + Math.floor((Math.random() * window.innerHeight) / 4);
-        step.style.padding = v + "px 0px";
-      });
+      //   step.forEach(function (step) {
+      //     var v = 100 + Math.floor((Math.random() * window.innerHeight) / 4);
+      //     step.style.padding = v + "px 0px";
+      //   });
 
       // 1. setup the scroller with the bare-bones options
       // 		this will also initialize trigger observations
