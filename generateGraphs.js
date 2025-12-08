@@ -105,109 +105,12 @@ export function main(
   // 6B) Append Y Axis
   graph.append("g").call(d3.axisLeft(yRaceScale));
 
-  // 6C) Add shapes
-  // Step 4A) Make p25 triangle
-  graph
-    .selectAll(".p25")
-    .data(data)
-    .join("path")
-    .attr("d", function (d, i) {
-      return genp25(d, i);
-    })
-    .attr("class", function (d) {
-      // Used AI to figure out how to apply a class based on the data, which was a lot easier than anticipated
-      // Logic: Return "p25" PLUS the sex (e.g., "p25 female" or "p25 male")
-      return "p25 " + d.sex;
-    })
-    .attr(
-      "transform",
-      (d, i) =>
-        `translate(${xIncScale(d.p25)}, ${
-          yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2
-        }) rotate(90)`
-    )
-    .style("fill", (d, i) => setColor(d, i));
-
-  // Step 4B) Make p75 triangle
-  graph
-    .selectAll(".p75")
-    .data(data)
-    .join("path")
-    .attr("class", function (d) {
-      // Used AI to figure out how to apply a class based on the data, which was a lot easier than anticipated
-      // Logic: Return "p25" PLUS the sex (e.g., "p25 female" or "p25 male")
-      return "p75 " + d.sex;
-    })
-    .attr("d", function (d, i) {
-      return genp75(d, i);
-    })
-    .attr(
-      "transform",
-      (d, i) =>
-        `translate(${xIncScale(d.p75)}, ${
-          yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2
-        }) rotate(-90)`
-    )
-    .style("fill", (d, i) => setColor(d, i));
-
-  // Step 4C) Make avg_sq square
-  graph
-    .selectAll(".avgsq")
-    .data(data)
-    .join("path")
-    .attr("class", function (d) {
-      // Used AI to figure out how to apply a class based on the data, which was a lot easier than anticipated
-      // Logic: Return "p25" PLUS the sex (e.g., "p25 female" or "p25 male")
-      return "avgsq " + d.sex;
-    })
-    .attr("d", function (d, i) {
-      return gensq(d, i);
-    })
-    .attr(
-      "transform",
-      (d, i) =>
-        `translate(${xIncScale(d.avg)}, ${
-          yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2
-        })`
-    )
-    .style("fill", (d, i) => setColor(d, i));
-
-  // Step 4D) Make USER INCOME CIRCLE
-  graph
-    .selectAll(".income")
-    .data(data)
-    .join("path")
-    .attr("class", "income_circle")
-    .attr("d", function (d, i) {
-      return gen_inc_circle(d, i);
-    })
-    .attr(
-      "transform",
-      `translate(${xIncScale(user_income)}, ${
-        yRaceScale(user_race) + yRaceScale.bandwidth() / 2
-      })`
-    )
-    .style("fill", "black");
-
-  graph
-    .selectAll(".lines")
-    .data(data)
-    .join("line")
-    .attr("class", "line_p25_p75")
-    .style("stroke", (d, i) => setColor(d, i))
-    .attr("x1", (d) => xIncScale(d.p25))
-    .attr("x2", (d) => xIncScale(d.p75))
-    .attr("y1", function (d, i) {
-      return yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2;
-    })
-    .attr("y2", function (d, i) {
-      return yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2;
-    });
+  // 6C) Make tooltip
 
   // 6D) Tooltip
   // 6D i) Tooltip Functions
   let tooltip = d3 // I can apparently just have one tooltip
-    .select(div)
+    .select("body")
     .append("div")
     .style("opacity", 0)
     .attr("class", "p25_tip")
@@ -237,7 +140,7 @@ export function main(
       .html(
         `<b>25th Percentile</b> among ${d.race_ethnc_gen} ${
           d.sex
-        }: ${formatMoney(d.p25)} `
+        }s: ${formatMoney(d.p25)} `
       )
       .style("left", event.pageX + 10 + "px")
       .style("top", event.pageY - 10 + "px");
@@ -264,6 +167,122 @@ export function main(
       .style("left", event.pageX + 10 + "px")
       .style("top", event.pageY - 10 + "px");
   };
+  let mousemove_cir = function (event, d) {
+    tooltip
+      .html(`<b>Your income</b>: ${formatMoney(+user_income)}`)
+      .style("left", event.pageX + 10 + "px")
+      .style("top", event.pageY - 10 + "px");
+  };
+  // 6D) Add shapes
+
+  // Make USER INCOME CIRCLE
+  graph
+    .selectAll(".income")
+    .data(data)
+    .join("path")
+    .attr("class", "income_circle")
+    .attr("d", function (d, i) {
+      return gen_inc_circle(d, i);
+    })
+    .attr(
+      "transform",
+      `translate(${xIncScale(user_income)}, ${
+        yRaceScale(user_race) + yRaceScale.bandwidth() / 2
+      })`
+    )
+    .style("fill", "black")
+    .on("mouseover", mouseover)
+    .on("mousemove", mousemove_cir)
+    .on("mouseleave", mouseleave);
+  // Make p25 triangle
+  graph
+    .selectAll(".p25")
+    .data(data)
+    .join("path")
+    .attr("d", function (d, i) {
+      return genp25(d, i);
+    })
+    .attr("class", function (d) {
+      // Used AI to figure out how to apply a class based on the data, which was a lot easier than anticipated
+      // Logic: Return "p25" PLUS the sex (e.g., "p25 female" or "p25 male")
+      return "p25 " + d.sex;
+    })
+    .attr(
+      "transform",
+      (d, i) =>
+        `translate(${xIncScale(d.p25)}, ${
+          yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2
+        }) rotate(90)`
+    )
+    .style("fill", (d, i) => setColor(d, i))
+    .on("mouseover", mouseover)
+    .on("mousemove", mousemove_p25)
+    .on("mouseleave", mouseleave);
+
+  // Make p75 triangle
+  graph
+    .selectAll(".p75")
+    .data(data)
+    .join("path")
+    .attr("class", function (d) {
+      // Used AI to figure out how to apply a class based on the data, which was a lot easier than anticipated
+      // Logic: Return "p25" PLUS the sex (e.g., "p25 female" or "p25 male")
+      return "p75 " + d.sex;
+    })
+    .attr("d", function (d, i) {
+      return genp75(d, i);
+    })
+    .attr(
+      "transform",
+      (d, i) =>
+        `translate(${xIncScale(d.p75)}, ${
+          yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2
+        }) rotate(-90)`
+    )
+    .style("fill", (d, i) => setColor(d, i))
+    .on("mouseover", mouseover)
+    .on("mousemove", mousemove_p75)
+    .on("mouseleave", mouseleave);
+
+  // Make avg_sq square
+  graph
+    .selectAll(".avgsq")
+    .data(data)
+    .join("path")
+    .attr("class", function (d) {
+      // Used AI to figure out how to apply a class based on the data, which was a lot easier than anticipated
+      // Logic: Return "p25" PLUS the sex (e.g., "p25 female" or "p25 male")
+      return "avgsq " + d.sex;
+    })
+    .attr("d", function (d, i) {
+      return gensq(d, i);
+    })
+    .attr(
+      "transform",
+      (d, i) =>
+        `translate(${xIncScale(d.avg)}, ${
+          yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2
+        })`
+    )
+    .style("fill", (d, i) => setColor(d, i))
+    .on("mouseover", mouseover)
+    .on("mousemove", mousemove_avg)
+    .on("mouseleave", mouseleave);
+
+  graph
+    .selectAll(".lines")
+    .data(data)
+    .join("line")
+    .attr("class", "line_p25_p75")
+    .style("stroke", (d, i) => setColor(d, i))
+    .attr("x1", (d) => xIncScale(d.p25))
+    .attr("x2", (d) => xIncScale(d.p75))
+    .attr("y1", function (d, i) {
+      return yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2;
+    })
+    .attr("y2", function (d, i) {
+      return yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2;
+    });
 
   // 6E) Legend functions
 
@@ -279,7 +298,7 @@ export function main(
   let legend = graph
     .append("g")
     .attr("class", "legend")
-    .attr("transform", "translate(10, 410)");
+    .attr("transform", `translate(10, ${height + 50})`);
 
   legend.append("text").text("Legend").style("font-size", "12px");
 
@@ -396,6 +415,25 @@ export function main(
     .attr("transform", "translate(15, 2.5)")
     .style("font-size", "10px");
 
+  let inc_circle = legend
+    .append("g")
+    .attr("class", "inc_circle")
+    .attr("transform", "translate(400,40)");
+
+  inc_circle
+    .append("path")
+    .attr("d", gen_inc_circle_legend)
+    .style("fill", "black")
+    .attr("transform", "translate(0,0)")
+    .on("mouseover", () => mouseover_legend(".income"))
+    .on("mouseleave", () => mouseleave_legend(".income"));
+
+  inc_circle
+    .append("text")
+    .text("Your income")
+    .attr("transform", "translate(15, 2.5)")
+    .style("font-size", "10px");
+
   // Used AI to learn how to put a box around the legend
 
   let bbox = legend.node().getBBox();
@@ -418,6 +456,5 @@ export function main(
     .style("font-weight", "bold")
     .text("Wage Gap");
   // Males & Females in the Top 10 most populous metro areas"
-
   return graph;
 }
