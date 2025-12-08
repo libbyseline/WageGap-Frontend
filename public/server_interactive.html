@@ -32,7 +32,11 @@
       </div>
     </section>
   </body>
-  <script>
+  <script src="../app.js"></script>
+  <script type="module">
+    // AI Disclaimer: learned how to read in d3 from AI/Google Response
+    import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
     // AI DISCLAIMER: Gemini wrote code to fetch the data
 
     // 1. Fetch the first dataset immediately when the page loads
@@ -58,28 +62,28 @@
       })
       .catch((error) => console.error("Error loading user stats:", error));
 
-    // using d3 for convenience, and storing a selected elements
-    const $container = d3.select("#scroll");
-    const $graphic = container.select(".scroll__graphic");
-    const $chart = graphic.select(".chart");
-    const $text = container.select(".scroll__text");
-    const $step = text.selectAll(".step");
+    // // using d3 for convenience, and storing a selected elements
+    // const $container = d3.select("#scroll");
+    // const $graphic = container.select(".scroll__graphic");
+    // const $chart = graphic.select(".chart");
+    // const $text = container.select(".scroll__text");
+    // const $step = text.selectAll(".step");
 
-    // initialize the scrollama
-    const scroller = scrollama();
+    // // initialize the scrollama
+    // const scroller = scrollama();
 
-    // resize function to set dimensions on load and on page resize
-    function handleResize() {}
+    // // resize function to set dimensions on load and on page resize
+    // function handleResize() {}
 
-    // scrollama event handlers
-    function handleStepEnter(response) {}
+    // // scrollama event handlers
+    // function handleStepEnter(response) {}
 
-    function handleContainerEnter(response) {}
+    // function handleContainerEnter(response) {}
 
-    function handleContainerExit(response) {}
+    // function handleContainerExit(response) {}
 
-    // kick-off code to run once on load
-    function graph1(data) {}
+    // // kick-off code to run once on load
+    // function graph1(data) {}
 
     // 2. Fetch the second dataset.
     // You can either do this immediately in the background:

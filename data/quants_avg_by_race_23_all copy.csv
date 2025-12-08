@@ -1,15 +1,17 @@
 race_ethnc_gen,sex,avg,p25,p75
-White,male,112699,40000,138000
-White,female,73904,26400,94000
-Asian Or Pacific Islander,male,102239,35000,134000
-Asian Or Pacific Islander,female,77270,25000,100000
-Other,male,93801,33800,106000
-Other,female,64134,22900,82000
-Two Or More Major Races,male,74977,28000,90000
-Two Or More Major Races,female,55803,20000,70000
-Black/African American,male,63292,25000,80000
-Black/African American,female,56094,22000,74000
-American Indian Or Alaska Native,male,55495,25000,70000
-American Indian Or Alaska Native,female,45064,18000,60000
-Hispanic,male,52102,25000,65000
-Hispanic,female,41523,19200,50000
+White,female,73904.0,26400.0,94000.0
+White,male,112699.0,40000.0,138000.0
+Asian Or Pacific Islander,male,102239.0,35000.0,134000.0
+Asian Or Pacific Islander,female,77270.0,25000.0,100000.0
+Other,female,64134.0,22900.0,82000.0
+Other,male,93801.0,33800.0,106000.0
+Two Or More Major Races,male,74977.0,28000.0,90000.0
+Two Or More Major Races,female,55803.0,20000.0,70000.0
+Black/African American,female,56094.0,22000.0,74000.0
+Black/African American,male,63292.0,25000.0,80000.0
+American Indian Or Alaska Native,female,45064.0,18000.0,60000.0
+American Indian Or Alaska Native,male,55495.0,25000.0,70000.0
+Hispanic,female,41523.0,19200.0,50000.0
+Hispanic,male,52102.0,25000.0,65000.0
+All,male,95501.0,31700.0,120000.0
+All,female,66400.0,24000.0,85000.0

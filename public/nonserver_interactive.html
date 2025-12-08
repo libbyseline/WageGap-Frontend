@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+  <head>
+    <title>Wage Gap</title>
+    <link href="css/interactive-style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <section id="intro">
+      <div>
+        <h1><span class="female">Wage</span> <span class="male">Gap</span></h1>
+        <h2>
+          How your salary fits within the wage gap <br />
+          between males and females in the US
+        </h2>
+        <h3>Project by Libby Seline</h3>
+        <p><span id="intro_paragraph"></span></p>
+        <ul>
+          <li>
+            a
+            <span class="user_race"></span>
+            <span class="user_sex"></span>
+          </li>
+          <li>
+            who lives in
+            <span class="user_metro"></span> metro area
+          </li>
+          <li>
+            and works in
+            <span class="user_industry"></span>.
+          </li>
+        </ul>
+        <p>
+          Your income is
+          <span class="user_income"></span>. How does that compare with other
+          <span class="user_sex"></span>s?
+        </p>
+      </div>
+      <div
+        class="step"
+        data-step="1"
+        style="padding: 145px 0px"
+        data-scrollama-index="0"
+      >
+        <div class="scrolly_text">
+          <p>STEP 1</p>
+        </div>
+      </div>
+      <div
+        class="step"
+        data-step="2"
+        style="padding: 286px 0px"
+        data-scrollama-index="1"
+      >
+        <div class="scrolly_text">
+          <p>STEP 2</p>
+        </div>
+      </div>
+      <div
+        class="step"
+        data-step="3"
+        style="padding: 201px 0px"
+        data-scrollama-index="2"
+      >
+        <div class="scrolly_text">
+          <p>STEP 3</p>
+        </div>
+      </div>
+      <div
+        class="step"
+        data-step="4"
+        style="padding: 130px 0px"
+        data-scrollama-index="3"
+      >
+        <p>STEP 4</p>
+      </div>
+    </section>
+  </body>
+  <script type="module">
+    // AI Disclaimer: learned how to read in d3 from AI/Google Response
+    import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+    // AI Disclaimer: I used AI to learn how to accept the form responses \
+    // (defining queryString, urlParams, userReport)
+    const queryString = window.location.search;
+    console.log(queryString);
+    const urlParams = new URLSearchParams(queryString);
+    console.log(urlParams);
+
+    const user_name = urlParams.get("name");
+    const user_income = urlParams.get("income");
+    const user_sex = urlParams.get("sex_dd");
+    const user_industry = urlParams.get("industry_dd");
+    const user_race = urlParams.get("race_dd");
+    const user_metro = urlParams.get("metro_dd");
+    if (user_name) {
+      // Learned how to call a string in HTML with Gemini
+      d3.select(".user_name").text(`${user_name}`);
+    }
+    if (user_income) {
+      // Learned how to call a string in HTML with Gemini
+      const formatMoney = d3.format("$,.0f"); // Formula created with AI
+      d3.selectAll(".user_income").text(`${formatMoney(+user_income)}`);
+    }
+    if (user_sex) {
+      // Learned how to call a string in HTML with Gemini
+      d3.selectAll(".user_sex").text(`${user_sex}`);
+    }
+    if (user_industry) {
+      // Learned how to call a string in HTML with Gemini
+      d3.selectAll(".user_industry").text(`${user_industry}`);
+    }
+    if (user_race) {
+      // Learned how to call a string in HTML with Gemini
+      d3.selectAll(".user_race").text(`${user_race}`);
+    }
+    if (user_metro) {
+      // Learned how to call a string in HTML with Gemini
+      d3.selectAll(".user_metro").text(`${user_metro}`);
+    }
+    console.log(user_name === "Average Female in US");
+    if (user_name === "Average Female in US") {
+      d3.select("#intro_paragraph").text(`For this simulation, you are`);
+    } else {
+      d3.select("#intro_paragraph").text(
+        `Hey ${user_name}. Let's recap what you entered in the form. You are `
+      );
+    }
+    const data = d3.json(
+      "https://raw.githubusercontent.com/libbyseline/WageGap-Frontend/refs/heads/main/data/quants_avg_by_race_23_all_copy.json"
+    );
+    console.log(data);
+
+    // COPY/PASTE DISCLAIMER:
+    // The base for Scrollytelly elements are from Scrollama's basic template: https://russellsamora.github.io/scrollama/basic/
+
+    var scrolly = document.querySelector("#scrolly");
+    var article = scrolly.querySelector("article");
+    var step = article.querySelectorAll(".step");
+
+    // initialize the scrollama
+    var scroller = scrollama();
+
+    // scrollama event handlers
+    function handleStepEnter(response) {
+      // response = { element, direction, index }
+      console.log(response);
+      // add to color to current step
+      response.element.classList.add("is-active");
+    }
+
+    function handleStepExit(response) {
+      // response = { element, direction, index }
+      console.log(response);
+      // remove color from current step
+      response.element.classList.remove("is-active");
+    }
+
+    function init() {
+      // set random padding for different step heights (not required)
+      step.forEach(function (step) {
+        var v = 100 + Math.floor((Math.random() * window.innerHeight) / 4);
+        step.style.padding = v + "px 0px";
+      });
+
+      // 1. setup the scroller with the bare-bones options
+      // 		this will also initialize trigger observations
+      // 2. bind scrollama event handlers (this can be chained like below)
+      scroller
+        .setup({
+          step: "#scrolly article .step",
+          debug: false,
+          offset: 0.5,
+        })
+        .onStepEnter(handleStepEnter)
+        .onStepExit(handleStepExit);
+    }
+
+    // kick things off
+    init();
+  </script>
+</html>

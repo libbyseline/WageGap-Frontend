@@ -132,13 +132,13 @@ app.get("/loadRaceGraphs.html", function (req, res) {
         topic: "mpcs53014_eseline_speed",
         messages: [{ value: JSON.stringify(report) }],
       })
-      .then((_) => res.redirect("interactive.html"))
+      .then((_) => res.redirect("server_interactive.html"))
       .catch((e) => {
         console.error(`[example/producer] ${e.message}`, e);
-        res.redirect("interactive.html");
+        res.redirect("server_interactive.html");
       });
   } else {
-    res.redirect("interactive.html");
+    res.redirect("server_interactive.html");
   }
 });
 
@@ -162,7 +162,10 @@ app.get("/api/user-stats", function (req, res) {
     if (err) {
       console.error("Error fetching User Stats:", err);
       res.status(500).json({ error: "Failed to fetch user stats" });
-      data = d3;
+      data = d3.json(
+        "https://github.com/libbyseline/WageGap-Frontend/blob/main/data/quants_avg_by_race_23_all_copy.json"
+      );
+      console.log(data);
     } else {
       // Send the rows back as JSON
       res.json(data);
