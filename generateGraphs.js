@@ -2,7 +2,16 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 // AI Disclaimer: Used AI to learn how to export function(s) to html
 // Notice the "export" keyword. This makes it public.
-export function main(div, data, user_income, margin, width, height, shp_size) {
+export function main(
+  div,
+  data,
+  user_income,
+  user_race,
+  margin,
+  width,
+  height,
+  shp_size
+) {
   const formatMoney = d3.format("$,.0f"); // Formula created with AI
   // Part 4: Graph Features Prep
   let domain = 140000;
@@ -40,6 +49,15 @@ export function main(div, data, user_income, margin, width, height, shp_size) {
   }
 
   // Step 5A) Prep p25, avg, p75 shapes
+  function gen_inc_circle(d, i) {
+    // This function will take the data and the sex (or color) and \
+    // then basically make the shapes the respective color
+    let inc_circle = d3.symbol().size(shp_size);
+
+    return inc_circle();
+  }
+
+  const gen_inc_circle_legend = d3.symbol().size(shp_size);
   function genp25(d, i) {
     // This function will take the data and the sex (or color) and \
     // then basically make the shapes the respective color
@@ -67,9 +85,10 @@ export function main(div, data, user_income, margin, width, height, shp_size) {
   const svg = d3
     .select(div)
     .append("svg")
-    .attr("width", 500)
-    .attr("height", 500)
-    .attr("viewBox", "-100 0 600 600");
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
 
   let graph = svg.append("g"); // Base
 
@@ -152,6 +171,23 @@ export function main(div, data, user_income, margin, width, height, shp_size) {
         })`
     )
     .style("fill", (d, i) => setColor(d, i));
+
+  // Step 4D) Make USER INCOME CIRCLE
+  graph
+    .selectAll(".income")
+    .data(data)
+    .join("path")
+    .attr("class", "income_circle")
+    .attr("d", function (d, i) {
+      return gen_inc_circle(d, i);
+    })
+    .attr(
+      "transform",
+      `translate(${xIncScale(user_income)}, ${
+        yRaceScale(user_race) + yRaceScale.bandwidth() / 2
+      })`
+    )
+    .style("fill", "black");
 
   graph
     .selectAll(".lines")
