@@ -1,0 +1,114 @@
+[
+  {
+    "race_ethnc_gen": "White",
+    "sex": "female",
+    "avg": 73904.0,
+    "p25": 26400.0,
+    "p75": 94000.0
+  },
+  {
+    "race_ethnc_gen": "White",
+    "sex": "male",
+    "avg": 112699.0,
+    "p25": 40000.0,
+    "p75": 138000.0
+  },
+  {
+    "race_ethnc_gen": "Asian Or Pacific Islander",
+    "sex": "male",
+    "avg": 102239.0,
+    "p25": 35000.0,
+    "p75": 134000.0
+  },
+  {
+    "race_ethnc_gen": "Asian Or Pacific Islander",
+    "sex": "female",
+    "avg": 77270.0,
+    "p25": 25000.0,
+    "p75": 100000.0
+  },
+  {
+    "race_ethnc_gen": "Other",
+    "sex": "female",
+    "avg": 64134.0,
+    "p25": 22900.0,
+    "p75": 82000.0
+  },
+  {
+    "race_ethnc_gen": "Other",
+    "sex": "male",
+    "avg": 93801.0,
+    "p25": 33800.0,
+    "p75": 106000.0
+  },
+  {
+    "race_ethnc_gen": "Two Or More Major Races",
+    "sex": "male",
+    "avg": 74977.0,
+    "p25": 28000.0,
+    "p75": 90000.0
+  },
+  {
+    "race_ethnc_gen": "Two Or More Major Races",
+    "sex": "female",
+    "avg": 55803.0,
+    "p25": 20000.0,
+    "p75": 70000.0
+  },
+  {
+    "race_ethnc_gen": "Black/African American",
+    "sex": "female",
+    "avg": 56094.0,
+    "p25": 22000.0,
+    "p75": 74000.0
+  },
+  {
+    "race_ethnc_gen": "Black/African American",
+    "sex": "male",
+    "avg": 63292.0,
+    "p25": 25000.0,
+    "p75": 80000.0
+  },
+  {
+    "race_ethnc_gen": "American Indian Or Alaska Native",
+    "sex": "female",
+    "avg": 45064.0,
+    "p25": 18000.0,
+    "p75": 60000.0
+  },
+  {
+    "race_ethnc_gen": "American Indian Or Alaska Native",
+    "sex": "male",
+    "avg": 55495.0,
+    "p25": 25000.0,
+    "p75": 70000.0
+  },
+  {
+    "race_ethnc_gen": "Hispanic",
+    "sex": "female",
+    "avg": 41523.0,
+    "p25": 19200.0,
+    "p75": 50000.0
+  },
+  {
+    "race_ethnc_gen": "Hispanic",
+    "sex": "male",
+    "avg": 52102.0,
+    "p25": 25000.0,
+    "p75": 65000.0
+  },
+  {
+    "race_ethnc_gen": "All",
+    "sex": "male",
+    "avg": 95501.0,
+    "p25": 31700.0,
+    "p75": 120000.0
+  },
+  {
+    "race_ethnc_gen": "All",
+    "sex": "female",
+    "avg": 66400.0,
+    "p25": 24000.0,
+    "p75": 85000.0
+  }
+]
