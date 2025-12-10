@@ -119,7 +119,8 @@ export function main(
     .style("border-width", "2px")
     .style("border-radius", "5px")
     .style("padding", "5px")
-    .style("font-size", 10)
+    .style("font-size", 12)
+    .style("font-family", "Arial, Helvetica, sans-serif")
     .style("position", "absolute")
     .style("pointer-events", "none");
 

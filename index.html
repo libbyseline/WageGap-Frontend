@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="public/css/interactive-style.css" rel="stylesheet" />
+    <link href="css/interactive-style.css" rel="stylesheet" />
     <title>Submission</title>
   </head>
   <body>
@@ -15,11 +15,12 @@
           between males and females in the US
         </h2>
         <h3>Project by Libby Seline</h3>
+        <p>Data submitted in the below form is not stored.</p>
       </div>
     </section>
     <!--  action="/loadRaceGraphs.html" -->
     <form
-      action="public/nonserver_interactive.html"
+      action="nonserver_interactive.html"
       style="
         width: 300px;
         margin: 0 auto;
@@ -35,6 +36,7 @@
         <span>Name:</span>
         <input type="text" id="name" name="name" />
       </label>
+      <br />
       <label>
         <span>Income:</span>
         <input
@@ -45,6 +47,7 @@
           maxlength="19"
         />
       </label>
+      <br />
       <label>
         <span>Sex:</span>
         <!-- 
@@ -58,7 +61,8 @@
           <option>Male</option>
         </select>
       </label>
-      <label>
+      <br />
+      <!-- <label>
         <span>Industry:</span>
         <select
           name="industry_dd"
@@ -88,7 +92,7 @@
           <option>Utilities</option>
           <option>Wholesale Trade</option>
         </select>
-      </label>
+      </label> -->
       <label>
         <span>Race:</span>
         <select name="race_dd" id="race_dd" onchange="checkSelects(race_dd)">
@@ -101,7 +105,7 @@
           <option>White</option>
         </select>
       </label>
-      <label>
+      <!-- <label>
         <span>Metro:</span>
         <select name="metro_dd" id="metro_dd" onchange="checkSelects(metro_dd)">
           <option hidden disabled selected value>-- Select an option --</option>
@@ -116,11 +120,14 @@
           <option>Phoenix-Mesa-Scottsdale</option>
           <option>Washington-Arlington-Alexandria</option>
         </select>
-      </label>
+      </label> -->
       <!-- <label> <span></span> <input type="submit" value="Submit" /> </label> -->
     </form>
-    <button id="submit_btn">Submit form</button>
-    <button id="default_btn">Use defaults</button>
+    <br />
+    <div class="buttons">
+      <button id="submit_btn">Submit form</button>
+      <button id="default_btn">Use defaults</button>
+    </div>
     <script>
       const submit_btn = document.querySelector("#submit_btn");
       const default_btn = document.querySelector("#default_btn");
