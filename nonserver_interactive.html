@@ -27,72 +27,72 @@
           data-scrollama-index="0"
           id="begin"
         >
-          <div class="step-text">
-            <p><span id="intro_paragraph"></span></p>
-            <ul>
-              <li>
-                a
-                <span class="user_race"></span>
-                <span class="user_sex"></span>
-              </li>
-              <li>
-                who lives in
-                <span class="user_metro"></span> metro area
-              </li>
-              <li>
-                and works in
-                <span class="user_industry"></span>.
-              </li>
-            </ul>
-            <p>
-              Your income is
-              <span class="user_income"></span>. How does that compare with
-              other <span class="user_sex"></span>s?
-            </p>
-          </div>
+          <!-- <div class="step-text"> -->
+          <p><span id="intro_paragraph"></span></p>
+          <ul>
+            <li>
+              a
+              <span class="user_race"></span>
+              <span class="user_sex"></span>
+            </li>
+            <li>
+              who lives in
+              <span class="user_metro"></span> metro area
+            </li>
+            <li>
+              and works in
+              <span class="user_industry"></span>.
+            </li>
+          </ul>
+          <p>
+            Your income is
+            <span class="user_income"></span>. How does that compare with other
+            <span class="user_sex"></span>s?
+          </p>
+          <!-- </div> -->
         </div>
 
         <div
           class="step"
           data-step="1"
-          style="padding: 145px 0px"
+          style="padding: 200px 0px"
           data-scrollama-index="1"
         >
-          <div class="step-text">
-            <p>STEP 1</p>
+          <div class="step-text" id="text1">
+            <span class="msg1"></span>
           </div>
           <div class="step-graph" id="graph1"></div>
         </div>
         <div
           class="step"
           data-step="2"
-          style="padding: 286px 0px"
+          style="padding: 200px 0px"
           data-scrollama-index="2"
         >
-          <div class="step-text">
-            <p>STEP 2</p>
+          <div class="step-text" id="text2">
+            <span class="msg2"></span>
           </div>
           <div class="step-graph" id="graph2"></div>
         </div>
         <div
           class="step"
           data-step="3"
-          style="padding: 201px 0px"
+          style="padding: 200px 0px"
           data-scrollama-index="3"
         >
-          <div class="step-text">
-            <p>STEP 3</p>
+          <div class="step-text" id="text3">
+            <span class="msg3"></span>
           </div>
           <div class="step-graph" id="graph3"></div>
         </div>
         <div
           class="step"
           data-step="4"
-          style="padding: 130px 0px"
+          style="padding: 200px 0px"
           data-scrollama-index="4"
         >
-          <div class="step-text">
-            <p>STEP 4</p>
+          <div class="step-text" id="text4">
+            <span class="msg4"></span>
           </div>
           <div class="step-graph" id="graph4"></div>
         </div>
@@ -103,6 +103,7 @@
     // AI Disclaimer: learned how to read in d3 from AI/Google Response
     import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
     import { main } from "../generateGraphs.js";
+    import { text_generator } from "../generatetext.js";
 
     // PART 1: Read in form
 
@@ -176,7 +177,7 @@
     // Part 4: Graph features
     // AI Disclaimer: Used AI to figure out how I should calculate the width -- and thus container, margin, and height
     const container = d3.select(".step-graph");
-    const margin = { top: 20, right: 20, bottom: 140, left: 50 };
+    const margin = { top: 20, right: 50, bottom: 200, left: 175 };
     const width =
       container.node().getBoundingClientRect().width -
       margin.left -
@@ -234,6 +235,24 @@
       shp_size_1
     );
 
+    const msg1 = text_generator("text1", step1_data, +user_income);
+    const msg2 = text_generator("text2", step2_data, +user_income);
+    const msg3 = text_generator("text3", step3_data, +user_income);
+    const msg4 = text_generator("text4", step4_data, +user_income);
+
+    console.log(msg1);
+    if (msg1) {
+      d3.select(".msg1").text(`${msg1}`);
+    }
+    if (msg2) {
+      d3.select(".msg2").text(`${msg2}`);
+    }
+    if (msg3) {
+      d3.select(".msg3").text(`${msg3}`);
+    }
+    if (msg4) {
+      d3.select(".msg1").text(`${msg4}`);
+    }
     // COPY/PASTE DISCLAIMER:
     // The base for Scrollytelly elements are from Scrollama's basic template: https://russellsamora.github.io/scrollama/basic/
 
