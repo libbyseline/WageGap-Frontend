@@ -2,12 +2,7 @@
 <html>
   <head>
     <title>Wage Gap</title>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.2.0/scrollama.min.js"
-      integrity="sha512-YE2BOLTLBOkZ10ahg304yD425ncH98QTjdCgfsjzAJB1tMHWeruT4BBrHL2FXfXLjFJqfsB7I7qhqxubPsT/dw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.2.0/scrollama.min.js"></script>
     <link href="css/interactive-style.css" rel="stylesheet" />
   </head>
   <body>
@@ -131,238 +126,232 @@
         </div>
       </article>
     </section>
+    <script type="module">
+      // AI Disclaimer: learned how to read in d3 from AI/Google Response
+      import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+      import { main } from "./generateGraphs.js";
+      import { text_generator } from "./generatetext.js";
+
+      // PART 1: Read in form
+
+      // AI Disclaimer: I used AI to learn how to accept the form responses \
+      // (defining queryString, urlParams, userReport)
+      const queryString = window.location.search;
+      console.log(queryString);
+      const urlParams = new URLSearchParams(queryString);
+      console.log(urlParams);
+
+      const user_name = urlParams.get("name");
+      const user_income = urlParams.get("income");
+      const user_sex = urlParams.get("sex_dd");
+      const user_industry = urlParams.get("industry_dd");
+      const user_race = urlParams.get("race_dd");
+      const user_metro = urlParams.get("metro_dd");
+      const sex_lower = user_sex.toLocaleLowerCase();
+
+      // Part 2: HTML based on form variables
+      // AI Disclaimer: Learned how to call a string in HTML with Gemini
+      // Further asked about calling classes
+
+      const formatMoney = d3.format("$,.0f"); // Formula created with AI
+      if (user_name) {
+        d3.selectAll(".user_name").text(`${user_name}`);
+      }
+      if (user_income) {
+        d3.selectAll(".user_income").text(`${formatMoney(+user_income)}`);
+      }
+      if (user_sex) {
+        d3.selectAll(".user_sex").text(`${user_sex}`);
+      }
+      if (user_industry) {
+        d3.selectAll(".user_industry").text(`${user_industry}`);
+      }
+      if (user_race) {
+        d3.selectAll(".user_race").text(`${user_race}`);
+      }
+      if (user_metro) {
+        d3.selectAll(".user_metro").text(`${user_metro}`);
+      }
+      if (user_name === "Average Female in US") {
+        d3.select("#intro_paragraph").text(
+          `For this simulation, you will represent the average female in the United States — who makes a different amount of money than the average female in the top 10 metro areas. To be more specific, you are:`
+        );
+      } else {
+        d3.select("#intro_paragraph").text(
+          `Hey ${user_name}. Let's recap what you entered in the form. You are `
+        );
+      }
+      const data = await d3.json(
+        "https://raw.githubusercontent.com/libbyseline/WageGap-Frontend/refs/heads/main/data/quants_avg_by_race_23_all_copy.json"
+      );
+      console.log(data);
+
+      // Part 3: Data Prep
+      let step1_data = data.filter(
+        (d) => d.sex === sex_lower && d.race_ethnc_gen === "All"
+      );
+      let step2_data = data.filter((d) => d.race_ethnc_gen === "All");
+      let step3_data = data.filter(
+        (d) => d.sex === sex_lower && d.race_ethnc_gen != "All"
+      );
+      let step4_data = data.filter((d) => d.race_ethnc_gen != "All");
+
+      console.log(step1_data);
+      console.log(step2_data);
+      console.log(step3_data);
+      console.log(step4_data);
+
+      // Part 4: Graph features
+      // AI Disclaimer: Used AI to figure out how I should calculate the width -- and thus container, margin, and height
+      const container = d3.select(".step-graph");
+      const margin = { top: 20, right: 50, bottom: 200, left: 175 };
+      const width =
+        container.node().getBoundingClientRect().width -
+        margin.left -
+        margin.right;
+      const height =
+        container.node().getBoundingClientRect().height -
+        margin.top -
+        margin.bottom;
+      const shp_size_1 = height / (2 * step1_data.length);
+      const shp_size_2 = height / (2 * step2_data.length);
+      const shp_size_3 = height / (2 * step3_data.length);
+      const shp_size_4 = height / (2 * step4_data.length);
+
+      // Part 5: Make graphs, append to div
+      const chart1 = main(
+        "#graph1",
+        step1_data,
+        user_income,
+        "All",
+        margin,
+        width,
+        height,
+        shp_size_1
+      );
+      const chart2 = main(
+        "#graph2",
+        step2_data,
+        user_income,
+        "All",
+        margin,
+        width,
+        height,
+        shp_size_1
+      );
+
+      const chart3 = main(
+        "#graph3",
+        step3_data,
+        user_income,
+        user_race,
+        margin,
+        width,
+        height,
+        shp_size_1
+      );
+
+      const chart4 = main(
+        "#graph4",
+        step4_data,
+        user_income,
+        user_race,
+        margin,
+        width,
+        height,
+        shp_size_1
+      );
+
+      //div, data, user_income, user_sex, user_race
+      const msg1 = text_generator(
+        "text1",
+        step1_data,
+        +user_income,
+        sex_lower,
+        user_race
+      );
+      const msg2 = text_generator(
+        "text2",
+        step2_data,
+        +user_income,
+        sex_lower,
+        user_race
+      );
+      const msg3 = text_generator(
+        "text3",
+        step3_data,
+        +user_income,
+        sex_lower,
+        user_race
+      );
+      const msg4 = text_generator(
+        "text4",
+        step4_data,
+        +user_income,
+        sex_lower,
+        user_race
+      );
+
+      console.log(msg1);
+      if (msg1) {
+        d3.select(".msg1").text(`${msg1}`);
+      }
+      if (msg2) {
+        d3.select(".msg2").text(`${msg2}`);
+      }
+      if (msg3) {
+        d3.select(".msg3").text(`${msg3}`);
+      }
+      if (msg4) {
+        d3.select(".msg4").text(`${msg4}`);
+      }
+      // COPY/PASTE DISCLAIMER:
+      // The base for Scrollytelly elements are from Scrollama's basic template: https://russellsamora.github.io/scrollama/basic/
+
+      var scrolly = document.querySelector("#scrolly");
+      var article = scrolly.querySelector("article");
+      var step = article.querySelectorAll(".step");
+
+      // initialize the scrollama
+      var scroller = scrollama();
+
+      // scrollama event handlers
+      function handleStepEnter(response) {
+        // response = { element, direction, index }
+        console.log(response);
+        // add to color to current step
+        response.element.classList.add("is-active");
+      }
+
+      function handleStepExit(response) {
+        // response = { element, direction, index }
+        console.log(response);
+        // remove color from current step
+        response.element.classList.remove("is-active");
+      }
+
+      function init() {
+        // set random padding for different step heights (not required)
+        //   step.forEach(function (step) {
+        //     var v = 100 + Math.floor((Math.random() * window.innerHeight) / 4);
+        //     step.style.padding = v + "px 0px";
+        //   });
+
+        // 1. setup the scroller with the bare-bones options
+        // 		this will also initialize trigger observations
+        // 2. bind scrollama event handlers (this can be chained like below)
+        scroller
+          .setup({
+            step: "#scrolly article .step",
+            debug: false,
+            offset: 0.5,
+          })
+          .onStepEnter(handleStepEnter)
+          .onStepExit(handleStepExit);
+      }
+
+      // kick things off
+      init();
+    </script>
   </body>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.2.0/scrollama.min.js"
-    integrity="sha512-YE2BOLTLBOkZ10ahg304yD425ncH98QTjdCgfsjzAJB1tMHWeruT4BBrHL2FXfXLjFJqfsB7I7qhqxubPsT/dw=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  ></script>
-  <script type="module">
-    // AI Disclaimer: learned how to read in d3 from AI/Google Response
-    import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-    import { main } from "./generateGraphs.js";
-    import { text_generator } from "./generatetext.js";
-
-    // PART 1: Read in form
-
-    // AI Disclaimer: I used AI to learn how to accept the form responses \
-    // (defining queryString, urlParams, userReport)
-    const queryString = window.location.search;
-    console.log(queryString);
-    const urlParams = new URLSearchParams(queryString);
-    console.log(urlParams);
-
-    const user_name = urlParams.get("name");
-    const user_income = urlParams.get("income");
-    const user_sex = urlParams.get("sex_dd");
-    const user_industry = urlParams.get("industry_dd");
-    const user_race = urlParams.get("race_dd");
-    const user_metro = urlParams.get("metro_dd");
-    const sex_lower = user_sex.toLocaleLowerCase();
-
-    // Part 2: HTML based on form variables
-    // AI Disclaimer: Learned how to call a string in HTML with Gemini
-    // Further asked about calling classes
-
-    const formatMoney = d3.format("$,.0f"); // Formula created with AI
-    if (user_name) {
-      d3.selectAll(".user_name").text(`${user_name}`);
-    }
-    if (user_income) {
-      d3.selectAll(".user_income").text(`${formatMoney(+user_income)}`);
-    }
-    if (user_sex) {
-      d3.selectAll(".user_sex").text(`${user_sex}`);
-    }
-    if (user_industry) {
-      d3.selectAll(".user_industry").text(`${user_industry}`);
-    }
-    if (user_race) {
-      d3.selectAll(".user_race").text(`${user_race}`);
-    }
-    if (user_metro) {
-      d3.selectAll(".user_metro").text(`${user_metro}`);
-    }
-    if (user_name === "Average Female in US") {
-      d3.select("#intro_paragraph").text(
-        `For this simulation, you will represent the average female in the United States — who makes a different amount of money than the average female in the top 10 metro areas. To be more specific, you are:`
-      );
-    } else {
-      d3.select("#intro_paragraph").text(
-        `Hey ${user_name}. Let's recap what you entered in the form. You are `
-      );
-    }
-    const data = await d3.json(
-      "https://raw.githubusercontent.com/libbyseline/WageGap-Frontend/refs/heads/main/data/quants_avg_by_race_23_all_copy.json"
-    );
-    console.log(data);
-
-    // Part 3: Data Prep
-    let step1_data = data.filter(
-      (d) => d.sex === sex_lower && d.race_ethnc_gen === "All"
-    );
-    let step2_data = data.filter((d) => d.race_ethnc_gen === "All");
-    let step3_data = data.filter(
-      (d) => d.sex === sex_lower && d.race_ethnc_gen != "All"
-    );
-    let step4_data = data.filter((d) => d.race_ethnc_gen != "All");
-
-    console.log(step1_data);
-    console.log(step2_data);
-    console.log(step3_data);
-    console.log(step4_data);
-
-    // Part 4: Graph features
-    // AI Disclaimer: Used AI to figure out how I should calculate the width -- and thus container, margin, and height
-    const container = d3.select(".step-graph");
-    const margin = { top: 20, right: 50, bottom: 200, left: 175 };
-    const width =
-      container.node().getBoundingClientRect().width -
-      margin.left -
-      margin.right;
-    const height =
-      container.node().getBoundingClientRect().height -
-      margin.top -
-      margin.bottom;
-    const shp_size_1 = height / (2 * step1_data.length);
-    const shp_size_2 = height / (2 * step2_data.length);
-    const shp_size_3 = height / (2 * step3_data.length);
-    const shp_size_4 = height / (2 * step4_data.length);
-
-    // Part 5: Make graphs, append to div
-    const chart1 = main(
-      "#graph1",
-      step1_data,
-      user_income,
-      "All",
-      margin,
-      width,
-      height,
-      shp_size_1
-    );
-    const chart2 = main(
-      "#graph2",
-      step2_data,
-      user_income,
-      "All",
-      margin,
-      width,
-      height,
-      shp_size_1
-    );
-
-    const chart3 = main(
-      "#graph3",
-      step3_data,
-      user_income,
-      user_race,
-      margin,
-      width,
-      height,
-      shp_size_1
-    );
-
-    const chart4 = main(
-      "#graph4",
-      step4_data,
-      user_income,
-      user_race,
-      margin,
-      width,
-      height,
-      shp_size_1
-    );
-
-    //div, data, user_income, user_sex, user_race
-    const msg1 = text_generator(
-      "text1",
-      step1_data,
-      +user_income,
-      sex_lower,
-      user_race
-    );
-    const msg2 = text_generator(
-      "text2",
-      step2_data,
-      +user_income,
-      sex_lower,
-      user_race
-    );
-    const msg3 = text_generator(
-      "text3",
-      step3_data,
-      +user_income,
-      sex_lower,
-      user_race
-    );
-    const msg4 = text_generator(
-      "text4",
-      step4_data,
-      +user_income,
-      sex_lower,
-      user_race
-    );
-
-    console.log(msg1);
-    if (msg1) {
-      d3.select(".msg1").text(`${msg1}`);
-    }
-    if (msg2) {
-      d3.select(".msg2").text(`${msg2}`);
-    }
-    if (msg3) {
-      d3.select(".msg3").text(`${msg3}`);
-    }
-    if (msg4) {
-      d3.select(".msg4").text(`${msg4}`);
-    }
-    // COPY/PASTE DISCLAIMER:
-    // The base for Scrollytelly elements are from Scrollama's basic template: https://russellsamora.github.io/scrollama/basic/
-
-    var scrolly = document.querySelector("#scrolly");
-    var article = scrolly.querySelector("article");
-    var step = article.querySelectorAll(".step");
-
-    // initialize the scrollama
-    var scroller = scrollama();
-
-    // scrollama event handlers
-    function handleStepEnter(response) {
-      // response = { element, direction, index }
-      console.log(response);
-      // add to color to current step
-      response.element.classList.add("is-active");
-    }
-
-    function handleStepExit(response) {
-      // response = { element, direction, index }
-      console.log(response);
-      // remove color from current step
-      response.element.classList.remove("is-active");
-    }
-
-    function init() {
-      // set random padding for different step heights (not required)
-      //   step.forEach(function (step) {
-      //     var v = 100 + Math.floor((Math.random() * window.innerHeight) / 4);
-      //     step.style.padding = v + "px 0px";
-      //   });
-
-      // 1. setup the scroller with the bare-bones options
-      // 		this will also initialize trigger observations
-      // 2. bind scrollama event handlers (this can be chained like below)
-      scroller
-        .setup({
-          step: "#scrolly article .step",
-          debug: false,
-          offset: 0.5,
-        })
-        .onStepEnter(handleStepEnter)
-        .onStepExit(handleStepExit);
-    }
-
-    // kick things off
-    init();
-  </script>
 </html>
