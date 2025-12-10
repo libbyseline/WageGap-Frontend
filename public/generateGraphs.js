@@ -460,7 +460,7 @@ export function main(
     .attr("text-anchor", "middle")
     .style("font-size", "16px")
     .style("font-weight", "bold")
-    .text("Wage Gap");
+    .text("Wage Gap: Top 10 Metro Areas & You");
   // Males & Females in the Top 10 most populous metro areas"
   return graph;
 }

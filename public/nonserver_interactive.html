@@ -106,7 +106,7 @@
             Data for this scrollytelling simulation comes from IPUMS USA, which
             has historical US census data. This specific data is from 2023 and
             contains the wage and salary incomes for males and females across
-            different industries and races/ethncities. The data was then
+            different industries and races/ethnicities. The data was then
             filtered to only contain salaries who make more than $1,000 and live
             in one of the top 10 most populous metro areas. Those metro areas
             are top 10 include:
@@ -149,7 +149,6 @@
     const user_race = urlParams.get("race_dd");
     const user_metro = urlParams.get("metro_dd");
     const sex_lower = user_sex.toLocaleLowerCase();
-    console.log(sex_lower);
 
     // Part 2: HTML based on form variables
     // AI Disclaimer: Learned how to call a string in HTML with Gemini
@@ -174,9 +173,10 @@
     if (user_metro) {
       d3.selectAll(".user_metro").text(`${user_metro}`);
     }
-    console.log(user_name === "Average Female in US");
     if (user_name === "Average Female in US") {
-      d3.select("#intro_paragraph").text(`For this simulation, you are`);
+      d3.select("#intro_paragraph").text(
+        `For this simulation, you will represent the average female in the United States — who makes a different amount of money than the average female in the top 10 metro areas. To be more specific, you are:`
+      );
     } else {
       d3.select("#intro_paragraph").text(
         `Hey ${user_name}. Let's recap what you entered in the form. You are `
@@ -263,10 +263,35 @@
       shp_size_1
     );
 
-    const msg1 = text_generator("text1", step1_data, +user_income);
-    const msg2 = text_generator("text2", step2_data, +user_income);
-    const msg3 = text_generator("text3", step3_data, +user_income);
-    const msg4 = text_generator("text4", step4_data, +user_income);
+    //div, data, user_income, user_sex, user_race
+    const msg1 = text_generator(
+      "text1",
+      step1_data,
+      +user_income,
+      sex_lower,
+      user_race
+    );
+    const msg2 = text_generator(
+      "text2",
+      step2_data,
+      +user_income,
+      sex_lower,
+      user_race
+    );
+    const msg3 = text_generator(
+      "text3",
+      step3_data,
+      +user_income,
+      sex_lower,
+      user_race
+    );
+    const msg4 = text_generator(
+      "text4",
+      step4_data,
+      +user_income,
+      sex_lower,
+      user_race
+    );
 
     console.log(msg1);
     if (msg1) {
@@ -279,7 +304,7 @@
       d3.select(".msg3").text(`${msg3}`);
     }
     if (msg4) {
-      d3.select(".msg1").text(`${msg4}`);
+      d3.select(".msg4").text(`${msg4}`);
     }
     // COPY/PASTE DISCLAIMER:
     // The base for Scrollytelly elements are from Scrollama's basic template: https://russellsamora.github.io/scrollama/basic/

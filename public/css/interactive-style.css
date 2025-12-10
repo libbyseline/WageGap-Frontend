@@ -86,6 +86,9 @@ span.male_highlight {
 }
 #begin {
   font-family: Arial, Helvetica, sans-serif;
+  margin-right: auto;
+  flex-direction: unset;
+  padding-right: 10%;
   /* text-align: center; */
 }
 /* AI DISCLAIMER: I used AI to generate the CSS for the divs within the steps
