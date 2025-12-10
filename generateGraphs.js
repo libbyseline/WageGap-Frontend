@@ -151,7 +151,7 @@ export function main(
       .html(
         `<b>75th Percentile</b> among ${d.race_ethnc_gen} ${
           d.sex
-        }: ${formatMoney(d.p75)}`
+        }s: ${formatMoney(d.p75)}`
       )
       .style("left", event.pageX + 10 + "px")
       .style("top", event.pageY - 10 + "px");
@@ -160,7 +160,7 @@ export function main(
   let mousemove_avg = function (event, d) {
     tooltip
       .html(
-        `<b>Mean income</b> among ${d.race_ethnc_gen} ${d.sex}: ${formatMoney(
+        `<b>Mean income</b> among ${d.race_ethnc_gen} ${d.sex}s: ${formatMoney(
           d.avg
         )}`
       )
@@ -174,6 +174,20 @@ export function main(
       .style("top", event.pageY - 10 + "px");
   };
   // 6D) Add shapes
+  graph
+    .selectAll(".lines")
+    .data(data)
+    .join("line")
+    .attr("class", "line_p25_p75")
+    .style("stroke", (d, i) => setColor(d, i))
+    .attr("x1", (d) => xIncScale(d.p25))
+    .attr("x2", (d) => xIncScale(d.p75))
+    .attr("y1", function (d, i) {
+      return yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2;
+    })
+    .attr("y2", function (d, i) {
+      return yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2;
+    });
 
   // Make USER INCOME CIRCLE
   graph
@@ -269,21 +283,6 @@ export function main(
     .on("mousemove", mousemove_avg)
     .on("mouseleave", mouseleave);
 
-  graph
-    .selectAll(".lines")
-    .data(data)
-    .join("line")
-    .attr("class", "line_p25_p75")
-    .style("stroke", (d, i) => setColor(d, i))
-    .attr("x1", (d) => xIncScale(d.p25))
-    .attr("x2", (d) => xIncScale(d.p75))
-    .attr("y1", function (d, i) {
-      return yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2;
-    })
-    .attr("y2", function (d, i) {
-      return yRaceScale(d.race_ethnc_gen) + yRaceScale.bandwidth() / 2;
-    });
-
   // 6E) Legend functions
 
   function mouseover_legend(element) {
@@ -298,7 +297,7 @@ export function main(
   let legend = graph
     .append("g")
     .attr("class", "legend")
-    .attr("transform", `translate(10, ${height + 50})`);
+    .attr("transform", `translate(10, ${height + 100})`);
 
   legend.append("text").text("Legend").style("font-size", "12px");
 
@@ -437,6 +436,10 @@ export function main(
   // Used AI to learn how to put a box around the legend
 
   let bbox = legend.node().getBBox();
+
+  // Gemini also walked me through how to center the legend -- which is more intricate
+  let legendCenter = bbox.x + bbox.width / 2;
+  let centeredX = width / 2 - legendCenter;
   legend
     .insert("rect", ":first-child")
     .attr("x", bbox.x - 10) // Add 10px padding on left
@@ -445,6 +448,8 @@ export function main(
     .attr("height", bbox.height + 20) // Height + 20px total padding
     .style("stroke", "gray")
     .style("fill", "none"); // Transparent background
+
+  legend.attr("transform", `translate(${centeredX}, ${height + 75})`);
 
   //  Part 7: Title
   let title = graph

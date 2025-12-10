@@ -61,6 +61,13 @@ span.female {
 span.male {
   color: #4269dd;
 }
+span.female_highlight {
+  background-color: #d03e84;
+}
+
+span.male_highlight {
+  background-color: #4269dd;
+}
 
 #scroll {
   position: relative;
@@ -83,7 +90,7 @@ One div will be for text. The other will have the graph  */
 
   /* Keep your existing padding/margin here */
   padding: 0px 0;
-  min-height: 30vh; /* Ensures the step is tall enough */
+  min-height: 50vh; /* Ensures the step is tall enough */
 }
 
 /* 2. Size the text area */
@@ -102,6 +109,10 @@ One div will be for text. The other will have the graph  */
   opacity: 0;
   transform: translateY(20px); /* Moves it down 20px */
   transition: all 0.5s ease-out; /* Smooths the animation */
+}
+
+.step-graph text {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Active state: Visible and in original position */
