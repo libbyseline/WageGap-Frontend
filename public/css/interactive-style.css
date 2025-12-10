@@ -1,7 +1,10 @@
 /* The following style is copy/pasted from Scrollama documentation 
 https://pudding.cool/process/introducing-scrollama/ */
 
-#intro h1 {
+#intro p {
+  text-align: center;
+}
+h1 {
   color: #000;
   /* font-weight: 900; */
   font-size: 9em;
@@ -14,7 +17,7 @@ https://pudding.cool/process/introducing-scrollama/ */
   font-family: Arial, Helvetica, sans-serif;
 }
 
-#intro h2 {
+h2 {
   color: #000;
   /* font-weight: 900; */
   font-size: 2em;
@@ -23,13 +26,19 @@ https://pudding.cool/process/introducing-scrollama/ */
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
 }
-#intro h3 {
+h3 {
   color: #000;
   /* font-weight: 900; */
   font-size: 1em;
   /* letter-spacing: 0.05em;
   line-height: 0.05em; */
   text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+text {
+  font-family: Arial, Helvetica, sans-serif;
+}
+span {
   font-family: Arial, Helvetica, sans-serif;
 }
 p {
@@ -47,11 +56,14 @@ ul {
   text-align: left; /* Keep the text/bullet relationship normal */
   padding-right: 40px; /* Optional: Balance the left padding so it looks perfectly centered */
 }
-
-img {
-  max-width: 10%; /* Ensures the image doesn't exceed the div's width */
-  height: auto; /* Maintains the image's aspect ratio */
-  object-fit: contain; /* Removes extra space below the image */
+label {
+  font-family: Arial, Helvetica, sans-serif;
+}
+select {
+  font-family: Arial, Helvetica, sans-serif;
+}
+div.buttons {
+  text-align: center;
 }
 
 span.female {

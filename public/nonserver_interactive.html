@@ -16,6 +16,8 @@
           the United States
         </h2>
         <h3>Project by Libby Seline</h3>
+        <br />
+        <h3>Scroll down to continue</h3>
       </div>
     </section>
     <section id="scrolly">
@@ -34,7 +36,7 @@
               a
               <span class="user_race"></span>
               <span class="user_sex"></span>
-            </li>
+              <!-- </li>
             <li>
               who lives in
               <span class="user_metro"></span> metro area
@@ -42,10 +44,12 @@
             <li>
               and works in
               <span class="user_industry"></span>.
+            </li> -->
             </li>
           </ul>
+
           <p>
-            Your income is
+            And your income is
             <span class="user_income"></span>. How does that compare with other
             <span class="user_sex"></span>s?
           </p>
@@ -96,14 +100,38 @@
           </div>
           <div class="step-graph" id="graph4"></div>
         </div>
+        <div>
+          <h2>Methodology</h2>
+          <p>
+            Data for this scrollytelling simulation comes from IPUMS USA, which
+            has historical US census data. This specific data is from 2023 and
+            contains the wage and salary incomes for males and females across
+            different industries and races/ethncities. The data was then
+            filtered to only contain salaries who make more than $1,000 and live
+            in one of the top 10 most populous metro areas. Those metro areas
+            are top 10 include:
+          </p>
+          <ul>
+            <li>New York-Newark-Jersey City, Ny-Nj-Pa</li>
+            <li>Atlanta-Sandy Springs-Roswell, Ga</li>
+            <li>Miami-Fort Lauderdale-West Palm Beach, Fl</li>
+            <li>Los Angeles-Long Beach-Anaheim, Ca</li>
+            <li>Houston-The Woodlands-Sugar Land, Tx</li>
+            <li>Dallas-Fort Worth-Arlington, Tx</li>
+            <li>Chicago-Naperville-Elgin, Il-In-Wi</li>
+            <li>Washington-Arlington-Alexandria, Dc-Va-Md-Wv</li>
+            <li>Phoenix-Mesa-Scottsdale, Az</li>
+            <li>Philadelphia-Camden-Wilmington, Pa-Nj-De-Md</li>
+          </ul>
+        </div>
       </article>
     </section>
   </body>
   <script type="module">
     // AI Disclaimer: learned how to read in d3 from AI/Google Response
     import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-    import { main } from "../generateGraphs.js";
-    import { text_generator } from "../generatetext.js";
+    import { main } from "./generateGraphs.js";
+    import { text_generator } from "./generatetext.js";
 
     // PART 1: Read in form
 
